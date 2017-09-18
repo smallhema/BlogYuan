@@ -1,0 +1,133 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <script src="{% static 'js/jquery-3.2.1.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        body {
+            font-size: 16px;
+
+        }
+
+        .img {
+            float: left;
+        }
+
+        .article_item {
+            margin-top: 20px;
+            border-bottom: 1px solid gray;
+        }
+
+    </style>
+    {% block style %}
+
+    {% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index/">山寨博客园</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+
+
+                {% for type_choice in func %}
+                    <li><a href="#">{{ type_choice.1 }}</a></li>
+                {% endfor %}
+
+                {#         {% if current_type_choices_id == 0 %}#}
+                {#                      <li class="active"><a href="#">ALL<span class="sr-only">(current)</span></a></li>#}
+                {#         {% else %}#}
+                {#                     <li><a href="#">ALL<span class="sr-only">(current)</span></a></li>#}
+                {##}
+                {#         {% endif %}#}
+                {##}
+                {##}
+                {#         {% for type_choice in type_choices %}#}
+                {##}
+                {#              {% if  current_type_choices_id == type_choice.0 %}#}
+                {#                <li class="active"><a href="/blog/{{ type_choice.0 }}">{{ type_choice.1 }}</a></li>#}
+                {#              {% else %}#}
+                {#                  <li><a href="/blog/{{ type_choice.0 }}">{{ type_choice.1 }}</a></li>#}
+                {#             {% endif %}#}
+                {##}
+                {##}
+                {#         {% endfor %}#}
+
+
+                {#                <li class="dropdown">#}
+                {#                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"#}
+                {#                       aria-expanded="false">Dropdown <span class="caret"></span></a>#}
+                {##}
+                {#                    <ul class="dropdown-menu">#}
+                {#                        <li><a href="#">Action</a></li>#}
+                {#                        <li><a href="#">Another action</a></li>#}
+                {#                        <li><a href="#">Something else here</a></li>#}
+                {#                        <li role="separator" class="divider"></li>#}
+                {#                        <li><a href="#">Separated link</a></li>#}
+                {#                        <li role="separator" class="divider"></li>#}
+                {#                        <li><a href="#">One more separated link</a></li>#}
+                {#                    </ul>#}
+                {#                </li>#}
+            </ul>
+
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/index/">返回首页</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="/login/">欢迎 {{ request.user.username }}</a></li>
+                    <li><a href="/logout/">注销</a></li>
+                    {#                    <li><a href="#">修改密码</a></li>#}
+                {% else %}
+                    <li><a href="/login/">登录</a></li>
+                    <li><a href="#">注册</a></li>
+                {% endif %}
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <div class="col-md-3">
+            {% block others %}
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

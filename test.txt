@@ -1,0 +1,1 @@
+<div class="list-group-item comment_item"><a href="">comment.user.username</a> &nbsp;&nbsp;<a href="">comment.create_time|date:"Y-m-d H:i"</a><div>comment.content</div>

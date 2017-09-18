@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <style>
+        .comment{
+            margin-left: 30px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="article_content">
+        <div><h3>{{ article_obj.title }}</h3></div>
+        <hr>
+        <div class="content" style="text-align: justify;text-indent: 28px">{{ article_obj.articledetail.content }}</div>
+        <div class="artilce_icon">
+            {% csrf_token %}
+            <a href=""><span class="glyphicon glyphicon-comment"></span>&nbsp; 评论{{ article_obj.comment_count }}</a> &nbsp;&nbsp;
+            <a class="poll">赞 <span class="glyphicon glyphicon-thumbs-up poll_num">{{ article_obj.up_count }}</span>&nbsp</a>
+            <span class="c1"></span>
+        </div>
+        <hr>
+        <h4>已有评论</h4>
+        {{ comment_str|safe }}
+        <div class="comment_list">
+            {% for comment in comment_list %}
+                <div class="list-group-item comment_item">
+                    <a href="">{{ comment.user.username }}</a> &nbsp;&nbsp;
+                    <a href="">{{ comment.create_time|date:"Y-m-d H:i" }}</a>
+                    <div>
+                        {{ comment.content }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <hr>
+        <form action="">
+            <textarea name="" id="comment_content" cols="30" rows="10">
+
+            </textarea>
+            <p>
+                <input type="button" class="btn btn-primary ajax_comment" value="提交评论">
+            </p>
+        </form>
+
+        <script>
+            var article_id = {{ article_obj.nid }}
+                $(".poll").click(function () {
+                    {% if request.user.is_authenticated %}
+                        $.ajax({
+                            url: "/blog/poll/",
+                            type: "POST",
+                            data: {
+                                "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+                                "article_id": article_id
+                            },
+                            success: function (data) {
+                                {#                            alert(data)#}
+                                {#                                alert('已经点过赞了！');#}
+                                data = JSON.parse(data);
+                                if (data["flag"]) {
+                                    $(".poll_num").text(parseInt($(".poll_num").text()) + 1)
+                                }
+                                else {
+                                    $(".c1").text("已经点过赞了！").css("color", "red");
+                                    setTimeout(function () {
+                                        $(".c1").text("");
+                                    }, 1000)
+
+                                }
+                            }
+                        });
+                    {% else %}
+                        location.href = "/login{{ request.path }}";
+                    {% endif %}
+                });
+
+            $(".ajax_comment").click(function () {
+                {#                    alert(123);#}
+                var comment_content = $(this).parent().prev().val();
+                {% if request.user.is_authenticated %}
+                    $.ajax({
+                        url: "/blog/comment/",
+                        type: "POST",
+                        data: {
+                            "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),
+                            "article_id": article_id,
+                            "comment_content": comment_content
+                        },
+                        success: function (data) {
+{#                            alert(data);#}
+                            s='<div class="list-group-item comment_item"><a href="">comment.user.username</a> &nbsp;&nbsp;<a href="">comment.create_time|date:"Y-m-d H:i"</a><div>comment.content</div>';
+                            $(".comment_list").append(s)
+                        }
+                    });
+                {% else %}
+                    location.href = "/login{{ request.path }}";
+                {% endif %}
+            })
+        </script>
+
+    </div>
+
+{% endblock %}
+
+{% block others %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">Panel heading without title</div>
+        <div class="panel-body">
+            <p>111</p>
+            <p>111</p>
+            <p>111</p>
+        </div>
+    </div>
+
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">Panel title</h3>
+        </div>
+        <div class="panel-body">
+            <p>111</p>
+            <p>111</p>
+            <p>111</p>
+        </div>
+    </div>
+
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Panel title</h3>
+        </div>
+        <div class="panel-body">
+            <p>111</p>
+            <p>111</p>
+            <p>111</p>
+        </div>
+    </div>
+{% endblock %}
