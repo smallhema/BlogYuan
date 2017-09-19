@@ -316,33 +316,33 @@ def homeSite(request,user_site,**kwargs):
 def articleDetail(request,user_site,article_id):
     article_obj=Article.objects.filter(nid=article_id).first()
     comment_list=Comment.objects.filter(article_id=article_id)
-    msg_list=[]
-    comment_dict={}
-    result=[]
-    for i in comment_list:
-        msg_dict = {}
-        msg_dict["id"]=i.nid
-        msg_dict["content"]=i.content
-        if i.parent_id:
-            msg_dict["parent_id"] = i.parent_id.nid
-        else:
-            msg_dict["parent_id"] = None
-        msg_dict["child"]=[]
-        # print(msg_dict)
-        msg_list.append(msg_dict)
-
-    for item in msg_list:
-        comment_dict[item["id"]]=item
-
-    for item in msg_list:
-        pid=item["parent_id"]
-        if pid:
-            comment_dict[pid]["child"].append(item)
-        else:
-            result.append(item)
-
-    from comment import comment_tree
-    comment_str=comment_tree(result)
+    # msg_list=[]
+    # comment_dict={}
+    # result=[]
+    # for i in comment_list:
+    #     msg_dict = {}
+    #     msg_dict["id"]=i.nid
+    #     msg_dict["content"]=i.content
+    #     if i.parent_id:
+    #         msg_dict["parent_id"] = i.parent_id.nid
+    #     else:
+    #         msg_dict["parent_id"] = None
+    #     msg_dict["child"]=[]
+    #     # print(msg_dict)
+    #     msg_list.append(msg_dict)
+    #
+    # for item in msg_list:
+    #     comment_dict[item["id"]]=item
+    #
+    # for item in msg_list:
+    #     pid=item["parent_id"]
+    #     if pid:
+    #         comment_dict[pid]["child"].append(item)
+    #     else:
+    #         result.append(item)
+    #
+    # from comment import comment_tree
+    # comment_str=comment_tree(result)
 
     return render(request,"articleDetail.html",locals())
 

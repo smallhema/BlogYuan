@@ -21,7 +21,7 @@
         </div>
         <hr>
         <h4>已有评论</h4>
-        {{ comment_str|safe }}
+{#        {{ comment_str|safe }}#}
         <div class="comment_list">
             {% for comment in comment_list %}
                 <div class="list-group-item comment_item">
@@ -29,6 +29,11 @@
                     <a href="">{{ comment.create_time|date:"Y-m-d H:i" }}</a>
                     <div>
                         {{ comment.content }}
+                        <div class="comment_comment" style="float: right">
+                            <a href=""><span class="glyphicon glyphicon-comment"></span>&nbsp; 评论</a> &nbsp;&nbsp;
+                            <a class="poll">赞 <span class="glyphicon glyphicon-thumbs-up poll_num"></span>&nbsp</a>
+                            <span class="c1"></span>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
